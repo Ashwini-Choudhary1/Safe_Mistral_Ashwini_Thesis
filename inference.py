@@ -1,3 +1,19 @@
+import torch
+from model import model, tokenizer, CFG
+
+def prepare_prompt(text):
+    instructions = []
+    if CFG.simplified_language:
+        instructions.append("Keep the response simple and easy to understand.")
+    if CFG.step_by_step_instructions:
+        instructions.append("Provide step-by-step explanations.")
+    if CFG.avoid_ambiguity:
+        instructions.append("Avoid vague or ambiguous wording.")
+    if CFG.provide_examples:
+        instructions.append("Include relevant examples.")
+    full_prompt = f"[INST] {text.strip()} {' '.join(instructions)} [/INST]"
+    return full_prompt
+
 def inference(prompt):
     try:
         encoded = tokenizer(prepare_prompt(prompt), return_tensors="pt", padding=True, truncation=True, max_length=1024)
