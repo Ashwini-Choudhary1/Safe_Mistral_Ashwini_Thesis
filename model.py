@@ -1,8 +1,10 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+import os
 
 class CFG:
     model_id = "mistralai/Mistral-7B-Instruct-v0.1"
+    hf_token = "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"  
     substrings_to_block = [
         "incite violence", "promote hatred", "terrorist act", "mass shooting",
         "bomb making", "self harm", "racial slurs", "hate speech", "sexist language",
@@ -49,12 +51,14 @@ model = AutoModelForCausalLM.from_pretrained(
     CFG.model_id,
     quantization_config=bnb_config,
     device_map="auto",
-    trust_remote_code=True
+    trust_remote_code=True,
+    token=CFG.hf_token
 ).to(device)
 
 tokenizer = AutoTokenizer.from_pretrained(
     CFG.model_id,
     trust_remote_code=True,
-    padding_side="left"
+    padding_side="left",
+    token=CFG.hf_token
 )
 tokenizer.pad_token = tokenizer.eos_token

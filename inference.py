@@ -34,9 +34,13 @@ def inference(prompt):
         response = output.split("[/INST]")[-1].strip() if "[/INST]" in output else output.strip()
 
         if CFG.use_bullet_points:
-            response = response.replace("\n", "\n- ")
+            response = response.replace("
+", "
+- ")
         if CFG.explicit_summaries:
-            response += "\n\n**Summary:** Key points of the response."
+            response += "
+
+**Summary:** Key points of the response."
         if CFG.consistent_tone:
             response = response.replace("!", ".")
 
