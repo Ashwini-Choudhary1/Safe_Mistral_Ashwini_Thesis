@@ -1,0 +1,11 @@
+app_name: thesis-safety-checker
+description: "A Streamlit app to test prompt safety and generate responses."
+cloud_compute:
+  cpu: false
+  gpu: true
+  memory: "16Gi"
+  disk_size: 20
+  timeout: 3600
+
+source_code: .
+entrypoint: streamlit run app.py
