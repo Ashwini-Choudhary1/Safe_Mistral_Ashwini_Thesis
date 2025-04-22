@@ -47,18 +47,25 @@ bnb_config = BitsAndBytesConfig(
 )
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = AutoModelForCausalLM.from_pretrained(
-    CFG.model_id,
-    quantization_config=bnb_config,
-    device_map="auto",
-    trust_remote_code=True,
-    token=CFG.hf_token
-).to(device)
 
-tokenizer = AutoTokenizer.from_pretrained(
-    CFG.model_id,
-    trust_remote_code=True,
-    padding_side="left",
-    token=CFG.hf_token
-)
-tokenizer.pad_token = tokenizer.eos_token
+# Initialize model and tokenizer here
+try:
+    model = AutoModelForCausalLM.from_pretrained(
+        CFG.model_id,
+        quantization_config=bnb_config if torch.cuda.is_available() else None, # Only use quantization if CUDA is available
+        device_map="auto" if torch.cuda.is_available() else None, # Let Transformers handle CPU if no CUDA
+        trust_remote_code=True,
+        token=CFG.hf_token
+    ).to(device)
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        CFG.model_id,
+        trust_remote_code=True,
+        padding_side="left",
+        token=CFG.hf_token
+    )
+    tokenizer.pad_token = tokenizer.eos_token
+except Exception as e:
+    print(f"Error loading model: {e}")
+    model = None
+    tokenizer = None

@@ -19,8 +19,8 @@ def inference(prompt):
         return "Model and/or tokenizer not loaded. Check logs for errors."
     try:
         encoded = tokenizer(prepare_prompt(prompt), return_tensors="pt", padding=True, truncation=True, max_length=1024)
-        input_ids = encoded.input_ids.to("cuda")
-        attention_mask = encoded.attention_mask.to("cuda")
+        input_ids = encoded.input_ids.to(device) # Use the 'device' variable
+        attention_mask = encoded.attention_mask.to(device) # Use the 'device' variable
 
         output_ids = model.generate(
             input_ids,
