@@ -14,4 +14,4 @@ A Streamlit-based application that detects unsafe content in prompts and respons
 
 ---
 
-## 📦 Installation
+
