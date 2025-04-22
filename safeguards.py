@@ -1,4 +1,4 @@
-from model import CFG
+from model import CFG # Import CFG only
 
 def scan_output(_, input_text, output_text, fail_fast=False):
     output_lower = output_text.lower()

@@ -1,5 +1,5 @@
 import torch
-from model import model, tokenizer, CFG
+from model import model, tokenizer, CFG # Import initialized instances
 
 def prepare_prompt(text):
     instructions = []
@@ -15,6 +15,8 @@ def prepare_prompt(text):
     return full_prompt
 
 def inference(prompt):
+    if model is None or tokenizer is None:
+        return "Model and/or tokenizer not loaded. Check logs for errors."
     try:
         encoded = tokenizer(prepare_prompt(prompt), return_tensors="pt", padding=True, truncation=True, max_length=1024)
         input_ids = encoded.input_ids.to("cuda")
